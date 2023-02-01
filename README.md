@@ -1,29 +1,41 @@
-# template-vite-react-ts-tailwind-v3
+# EchoMusicWeb
 
-- **template of:** vite + react + typescript
-- **tailwindcss:** v3.x
+- A web project work with echo-music-api
+- Base on react, tailwindcss and vite
 
 ## Started
+
 ```bash
-yarn
-# or `npm install`
+pmpm install
 ```
 
 ---
+
 ## Develop
+
 ```bash
-yarn dev
-# or `npm run dev`
+pnpm dev
 ```
 
 ---
+
 ## Build
+
 ```bash
-yarn build
-# or `npm run build`
+pnpm build
 ```
 
 ---
-<p align="center">
-<img src="./powered-by-vitawind-bright.png">
-</p>
+
+## Config
+
+- Config api baseUrl in `src/common/request.ts`
+
+```typescript
+// src/common/request.ts
+import axios from "axios";
+
+const baseUrl = "http://127.0.0.1:3001"; // replace the base url
+
+const instance = axios.create({ baseURL: baseUrl });
+```
