@@ -8,7 +8,6 @@ specifiers:
   '@typescript-eslint/parser': ^5.48.1
   '@vitejs/plugin-react': ^3.0.1
   ahooks: ^3.7.4
-  anim-react: ^1.1.212
   animate.css: ^4.1.1
   autoprefixer: ^10.4.13
   axios: ^1.2.2
@@ -34,7 +33,6 @@ specifiers:
 
 dependencies:
   ahooks: 3.7.4_react@18.2.0
-  anim-react: 1.1.212_biqbaboplfbrettd7655fr4n2y
   animate.css: 4.1.1
   axios: 1.2.2
   daisyui: 2.47.0_gbtt6ss3tbiz4yjtvdr6fbrj44
@@ -988,16 +986,6 @@ packages:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
     dev: true
-
-  /anim-react/1.1.212_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-EtRsNlSplMkjdh5WLXp4+Rv1J53IG8RVgPua1Uhi18FVWk2djzC1G4/0xGWEXQzT8AQyWtddTtGUoH2thVIjfg==}
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /animate.css/4.1.1:
     resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}

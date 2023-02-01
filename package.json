@@ -1,6 +1,6 @@
 {
   "name": "echo-music-web",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "ahooks": "^3.7.4",
-    "anim-react": "^1.1.212",
     "animate.css": "^4.1.1",
     "axios": "^1.2.2",
     "daisyui": "^2.47.0",
