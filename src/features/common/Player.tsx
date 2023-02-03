@@ -17,6 +17,7 @@ import {
   TransferButton,
   Empty,
   context,
+  useToast,
 } from "@src/common/components";
 import { SongItem } from "@src/common/typings";
 import { Item } from "@src/features/song";
@@ -105,6 +106,8 @@ const Player: FC<Props> = ({ className }) => {
   useEffect(() => {
     setAnimate(true);
   }, [showPlayer]);
+  const toast = useToast();
+
   return (
     <div className="w-screen flex justify-center">
       {(showPlayer || animate) && (
@@ -201,6 +204,9 @@ const Player: FC<Props> = ({ className }) => {
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={next}
+        onError={() => {
+          toast.error("当前音源播放错误，请尝试换源");
+        }}
       ></audio>
     </div>
   );
