@@ -1,8 +1,8 @@
-import { useSetStore } from "@src/common/hooks";
-import { useCallback } from "react";
+import { context } from "@src/common/components";
+import { useCallback, useContext } from "react";
 
 const useShowPlayer = () => {
-  const setStore = useSetStore();
+  const { setStore } = useContext(context);
   const show = useCallback(() => {
     setStore?.({ showPlayer: true });
   }, [setStore]);

@@ -3,10 +3,8 @@ import {
   useContext,
   FC,
   ReactNode,
-  useEffect,
   useCallback,
 } from "react";
-import useSetStore from "../hooks/useSetStore";
 import { context } from "./GlobalProvider";
 
 const Modal = () => {
@@ -27,7 +25,6 @@ const Modal = () => {
 };
 
 const useModal = () => {
-  // const setStore = useSetStore();
   const { setStore } = useContext(context);
   const setContent = useCallback(
     (content: ReactNode) => setStore?.({ modalContent: content }),

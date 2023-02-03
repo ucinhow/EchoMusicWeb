@@ -3,7 +3,6 @@ import { RefObject, useCallback, useContext, useEffect, useState } from "react";
 import { context } from "@src/common/components";
 import { useDetail, useUrl } from "@src/features/song";
 import usePlayableSrc from "./usePlayableSrc";
-import useSetStore from "@src/common/hooks/useSetStore";
 
 export enum Mode {
   loop = "loop",
@@ -15,7 +14,6 @@ const modeList = Object.values(Mode);
 
 const usePlayer = (audioRef: RefObject<HTMLAudioElement>) => {
   const { playlist, playIdx, setStore } = useContext(context);
-  // const setStore = useSetStore();
   const len = playlist.length;
   const item = playlist[playIdx];
   const { src, transfer } = usePlayableSrc(item);

@@ -1,8 +1,8 @@
+import { context } from "@src/common/components";
 import { SongItem } from "@src/common/typings";
-import useSetStore from "@src/common/hooks/useSetStore";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 const usePlay = () => {
-  const setStore = useSetStore();
+  const { setStore } = useContext(context);
   const play = useCallback(
     (items: SongItem[], idx: number = 0) => {
       setStore?.({ playlist: items, playIdx: idx, showPlayer: true });

@@ -1,8 +1,8 @@
+import { context } from "@src/common/components";
 import { AsideBtnKey } from "@src/common/typings";
 import { useScroll } from "ahooks";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useAsideBtn } from "./useAsideBtn";
-import useSetStore from "@src/common/hooks/useSetStore";
 
 const useBackTop = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ const useBackTop = () => {
     };
     fn();
   }, []);
-  const setStore = useSetStore();
+  const { setStore } = useContext(context);
 
   useEffect(() => {
     if (top === undefined) return;

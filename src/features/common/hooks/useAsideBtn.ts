@@ -1,7 +1,6 @@
 import { context } from "@src/common/components";
 import { AsideBtnKey } from "@src/common/typings";
 import { useContext, useCallback } from "react";
-// import useSetStore from "@src/common/hooks/useSetStore";
 
 export const useAsideBtn = () => {
   const { setStore } = useContext(context);

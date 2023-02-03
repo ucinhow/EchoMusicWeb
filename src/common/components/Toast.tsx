@@ -41,7 +41,6 @@ const Toast = () => {
 
 export const useToast = () => {
   const { toastList, setStore } = useContext(context);
-  // const setStore = useSetStore();
   const add = useCallback(
     (msg: string, type: Type) => {
       const toastObj = { msg, type };
