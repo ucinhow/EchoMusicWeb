@@ -1,6 +1,6 @@
 import { get } from "@src/common/request";
 import { SongItem, Source } from "@src/common/typings";
-import { usePagination, useRequest } from "ahooks";
+import { usePagination, useRequest } from "@src/common/hooks";
 import { useEffect } from "react";
 
 interface ToplistDetailResponse {
@@ -35,15 +35,14 @@ export const useDetail = (
   return { data, loading, run: () => run(id, page, size, src) };
 };
 
-export const useDetailPagination = (id: number = NaN, src: Source) => {
-  const newGet = ({
-    current,
-    pageSize,
-  }: {
-    current: number;
-    pageSize: number;
-  }) =>
-    getToplistDetail(id, current, pageSize, src).then(
+interface PaginationParams {
+  current: number;
+  pageSize: number;
+}
+
+export const useDetailPagination = (src: Source, id?: number) => {
+  const newGet = ({ current, pageSize }: PaginationParams) =>
+    getToplistDetail(id || NaN, current, pageSize, src).then(
       ({ id, name, songlist, updateTime, total, picUrl, intro }) => ({
         id,
         name,
@@ -57,15 +56,16 @@ export const useDetailPagination = (id: number = NaN, src: Source) => {
   const { data, loading, pagination, run } = usePagination(newGet, {
     manual: true,
     defaultPageSize: 20,
-    // refreshDeps: [src, id],
+    // refreshDeps: [id, src],
   });
 
   useEffect(() => {
-    if (!Number.isNaN(id))
-      run({ current: pagination.current, pageSize: pagination.pageSize });
+    if (id === undefined || src === undefined) return;
+    run({ current: pagination.current, pageSize: pagination.pageSize });
   }, [id]);
 
   useEffect(() => {
+    if (id === undefined || pagination.current === 1) return;
     pagination.changeCurrent(1);
   }, [id, src]);
 

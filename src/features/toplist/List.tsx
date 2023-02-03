@@ -1,5 +1,5 @@
-import { context, Spinner, Card } from "@src/common/components";
-import { FC, useContext } from "react";
+import { Card } from "@src/common/components";
+import { FC } from "react";
 import { useDetailPagination } from "./hooks";
 import { composeClass } from "@src/common/utils";
 import { Item, ItemTitle, Skeleton } from "@src/features/song";
@@ -11,7 +11,7 @@ const List: FC<{ className?: string; id?: number; src: Source }> = ({
   id,
   src,
 }) => {
-  const { data, loading, pagination } = useDetailPagination(id, src);
+  const { data, loading, pagination } = useDetailPagination(src, id);
   const { play } = usePlay();
   const { current, changeCurrent, totalPage } = pagination;
 
