@@ -29,7 +29,7 @@ const Footer: FC<{ className?: string }> = ({ className }) => {
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a href="https://github.com/NosignaL994/EchoMusicWeb">
+          <a href="https://github.com/NosignaL994/EchoMusicWeb" target="_blank">
             <BsGithub />
           </a>
           <a href={`mailto:${import.meta.env.VITE_EMAIL}`}>

@@ -84,11 +84,14 @@ const ListButtonContainer: FC<{ list: SongItem[] }> = ({ list }) => {
 };
 
 const Player: FC<Props> = ({ className }) => {
+  // ref to control media play
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audio = audioRef.current;
+
+  // meta and callbacks
   const { detail, url, prev, next, transferSrc, playlist, transferMode, mode } =
     usePlayer(audioRef);
   const { picUrl, name, duration, singer } = detail || {};
-  const audio = audioRef.current;
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(audio?.played || false);
   const [show, hide] = useShowPlayer();
@@ -98,6 +101,8 @@ const Player: FC<Props> = ({ className }) => {
   const pause = () => {
     audio?.pause();
   };
+
+  // show and hidden animation
   const containerRef = useRef<HTMLDivElement>(null);
   const showPlayer = useContextSelector(
     context,
@@ -107,6 +112,8 @@ const Player: FC<Props> = ({ className }) => {
   useEffect(() => {
     setAnimate(true);
   }, [showPlayer]);
+
+  // send toast when play error
   const toast = useToast();
 
   return (
@@ -122,7 +129,7 @@ const Player: FC<Props> = ({ className }) => {
           )}
           ref={containerRef}
           onAnimationEnd={({ animationName }) => {
-            if (animationName === "slideOutRight") setAnimate(false);
+            if (animationName === "fadeOut") setAnimate(false);
           }}
         >
           <div className="flex items-center space-x-2 flex-1">
