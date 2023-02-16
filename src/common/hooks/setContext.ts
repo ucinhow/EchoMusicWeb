@@ -58,11 +58,11 @@ export const useSetModalContent = () => {
 export const useSetAsideBtns = () => {
   const setStore = useSetStore();
 
-  const switchAsideBtn = (key: AsideBtnKey) => {
+  const switchAsideBtn = (key: AsideBtnKey, show: boolean) => {
     setStore((state) => {
       const newAsideBtns = {
         ...state.asideButtons,
-        [key]: !state.asideButtons[key],
+        [key]: show,
       };
       return { asideButtons: newAsideBtns };
     });

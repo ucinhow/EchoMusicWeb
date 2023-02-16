@@ -16,8 +16,6 @@ const cls = "w-10 h-10 animate__zoomIn";
 const iconCls = "w-5 h-5";
 
 const Aside: FC<{ className?: string }> = ({ className }) => {
-  // const store = useContext(context);
-  // const { asideButtons, transSrc, showPlayer } = store;
   const { asideButtons, transSrc, showPlayer } = useContextSelector(
     context,
     ({ store: { asideButtons, transSrc, showPlayer } }) => ({

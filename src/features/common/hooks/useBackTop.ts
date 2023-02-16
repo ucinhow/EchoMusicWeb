@@ -1,7 +1,7 @@
-import { context } from "@src/common/components";
+import { useSetToTop } from "@src/common/hooks/setContext";
 import { AsideBtnKey } from "@src/common/typings";
 import { useScroll } from "ahooks";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAsideBtn } from "./useAsideBtn";
 
 const useBackTop = () => {
@@ -14,6 +14,7 @@ const useBackTop = () => {
   );
   const { top } = position || {};
 
+  const setToTop = useSetToTop();
   const toTop = useCallback(() => {
     const fn = () => {
       if (!containerRef.current) return;
@@ -24,7 +25,6 @@ const useBackTop = () => {
     };
     fn();
   }, []);
-  const { setStore } = useContext(context);
 
   useEffect(() => {
     if (top === undefined) return;
@@ -39,9 +39,9 @@ const useBackTop = () => {
   }, [top]);
 
   useEffect(() => {
-    setStore?.({ toTop });
-    return () => setStore?.({ toTop: undefined });
-  }, [setStore]);
+    setToTop(toTop);
+    return () => setToTop(() => {});
+  }, []);
   return containerRef;
 };
 export default useBackTop;

@@ -1,12 +1,10 @@
 import PageWrapper from "./PageWrapper";
 import { List, Menu } from "@src/features/songlist";
-import { useContext, useState } from "react";
-import { context } from "@src/common/components";
+import { useState } from "react";
 import { useTransferSrc } from "@src/features/common/hooks/useTransferSrc";
 import { Source } from "@src/common/typings";
 
 export const Songlist = () => {
-  //   const { songlistSrc: src } = useContext(context);
   const [src, setSrc] = useState(Source.qq);
   const [id, setId] = useState("");
   useTransferSrc(src, setSrc);

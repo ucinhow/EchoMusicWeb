@@ -1,25 +1,14 @@
-import { context } from "@src/common/components";
+import { useSetAsideBtns } from "@src/common/hooks/setContext";
 import { AsideBtnKey } from "@src/common/typings";
-import { useContext, useCallback } from "react";
 
 export const useAsideBtn = () => {
-  const { setStore } = useContext(context);
-  const add = useCallback(
-    (btnKey: AsideBtnKey) => {
-      setStore?.((pre) => ({
-        asideButtons: { ...pre.asideButtons, [btnKey]: true },
-      }));
-    },
-    [setStore]
-  );
-  const remove = useCallback(
-    (btnKey: AsideBtnKey) => {
-      setStore?.((pre) => ({
-        asideButtons: { ...pre.asideButtons, [btnKey]: false },
-      }));
-    },
-    [setStore]
-  );
+  const setAsideBtns = useSetAsideBtns();
+  const add = (btnKey: AsideBtnKey) => {
+    setAsideBtns(btnKey, true);
+  };
+  const remove = (btnKey: AsideBtnKey) => {
+    setAsideBtns(btnKey, false);
+  };
 
   return [add, remove];
 };

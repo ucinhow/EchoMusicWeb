@@ -1,14 +1,12 @@
-import {
-  PropsWithChildren,
-  useContext,
-  FC,
-  ReactNode,
-  useCallback,
-} from "react";
+import { PropsWithChildren, FC, ReactNode } from "react";
 import { context } from "./GlobalProvider";
-
+import { useContextSelector } from "use-context-selector";
+import { useSetModalContent } from "../hooks/setContext";
 const Modal = () => {
-  const { modalContent } = useContext(context);
+  const modalContent = useContextSelector(
+    context,
+    ({ store }) => store.modalContent
+  );
   return (
     <>
       <input type="checkbox" id="modal" className="modal-toggle" />
@@ -24,15 +22,6 @@ const Modal = () => {
   );
 };
 
-const useModal = () => {
-  const { setStore } = useContext(context);
-  const setContent = useCallback(
-    (content: ReactNode) => setStore?.({ modalContent: content }),
-    [setStore]
-  );
-  return { setContent };
-};
-
 export const ModalLabel: FC<
   PropsWithChildren<{
     content: ReactNode;
@@ -40,7 +29,7 @@ export const ModalLabel: FC<
     onClick?: VoidFunction;
   }>
 > = ({ children, content, className, onClick }) => {
-  const { setContent } = useModal();
+  const setContent = useSetModalContent();
   return (
     <label
       htmlFor="modal"
