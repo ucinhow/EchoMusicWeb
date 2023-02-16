@@ -7,7 +7,6 @@ import {
   PlayButton,
   PrevButton,
   NextButton,
-  // ToRightButton,
   HideButton,
   PauseButton,
   ListButton,
@@ -22,7 +21,6 @@ import {
 import { SongItem } from "@src/common/typings";
 import { Item } from "@src/features/song";
 import useShowPlayer from "./hooks/useShowPlayer";
-// import { useAnim } from "anim-react";
 
 interface Props {
   className?: string;
@@ -152,46 +150,65 @@ const Player: FC<Props> = ({ className }) => {
             </div>
           </div>
           <div className="flex space-x-2">
-            <PrevButton
-              onClick={prev}
-              className={buttonCls}
-              iconCls={btnIconCls}
-            />
+            <div className="tooltip tooltip-primary" data-tip={"上一首"}>
+              <PrevButton
+                onClick={prev}
+                className={buttonCls}
+                iconCls={btnIconCls}
+              />
+            </div>
             {isPlaying ? (
-              <PauseButton
-                onClick={pause}
-                className={buttonCls}
-                iconCls={btnIconCls}
-              />
+              <div className="tooltip tooltip-primary" data-tip="暂停">
+                <PauseButton
+                  onClick={pause}
+                  className={buttonCls}
+                  iconCls={btnIconCls}
+                />
+              </div>
             ) : (
-              <PlayButton
-                onClick={play}
+              <div className="tooltip tooltip-primary" data-tip="播放">
+                <PlayButton
+                  onClick={play}
+                  className={buttonCls}
+                  iconCls={btnIconCls}
+                />
+              </div>
+            )}
+            <div className="tooltip tooltip-primary" data-tip="下一首">
+              <NextButton
                 className={buttonCls}
+                onClick={next}
                 iconCls={btnIconCls}
               />
-            )}
-            <NextButton
-              className={buttonCls}
-              onClick={next}
-              iconCls={btnIconCls}
-            />
-            <ModeButton
-              mode={mode}
-              className={buttonCls}
-              iconCls={btnIconCls}
-              onClick={transferMode}
-            />
-            <ListButtonContainer list={playlist} />
-            <TransferButton
-              className={buttonCls}
-              iconCls={btnIconCls}
-              onClick={transferSrc}
-            />
-            <HideButton
-              className={buttonCls}
-              iconCls={btnIconCls}
-              onClick={hide}
-            />
+            </div>
+
+            <div className="tooltip tooltip-primary" data-tip="切换顺序">
+              <ModeButton
+                mode={mode}
+                className={buttonCls}
+                iconCls={btnIconCls}
+                onClick={transferMode}
+              />
+            </div>
+            <div className="tooltip tooltip-primary" data-tip="播放列表">
+              <ListButtonContainer list={playlist} />
+            </div>
+
+            <div className="tooltip tooltip-primary" data-tip="音源切换">
+              <TransferButton
+                className={buttonCls}
+                iconCls={btnIconCls}
+                onClick={transferSrc}
+              />
+            </div>
+
+            <div className="tooltip tooltip-primary" data-tip="隐藏播放栏">
+              <HideButton
+                className={buttonCls}
+                iconCls={btnIconCls}
+                onClick={hide}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -205,7 +222,8 @@ const Player: FC<Props> = ({ className }) => {
         onPause={() => setIsPlaying(false)}
         onEnded={next}
         onError={() => {
-          toast.error("当前音源播放错误，请尝试换源");
+          toast.error("当前音源播放错误，已自动换源");
+          transferSrc();
         }}
       ></audio>
     </div>

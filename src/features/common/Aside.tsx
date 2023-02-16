@@ -2,13 +2,11 @@ import {
   TransferButton,
   BackTopButton,
   context,
-  // ToLeftButton,
   ShowButton,
 } from "@src/common/components";
 import { composeClass } from "@src/common/utils";
-import { FC, useCallback, useContext } from "react";
-import { AsideBtnKey, Source } from "@src/common/typings";
-import { SOURCE } from "@src/common/constants";
+import { FC, useContext } from "react";
+import { AsideBtnKey } from "@src/common/typings";
 import useToTop from "./hooks/useToTop";
 import useShowPlayer from "./hooks/useShowPlayer";
 
@@ -20,13 +18,7 @@ const iconCls = "w-5 h-5";
 const Aside: FC<{ className?: string }> = ({ className }) => {
   const store = useContext(context);
   const { asideButtons, transSrc, showPlayer } = store;
-  // const src = transSrcKey === "toplist" ? store.toplistSrc : store.songlistSrc;
-  // const transferSrc = useCallback(() => {
-  //   const index = SOURCE.indexOf(src);
-  //   const newSrc = SOURCE[(index + 1) % SOURCE.length];
-  //   if (transSrcKey === "toplist") setStore?.({ toplistSrc: newSrc });
-  //   if (transSrcKey === "songlist") setStore?.({ songlistSrc: newSrc });
-  // }, [setStore, src, transSrcKey]);
+
   const toTop = useToTop();
   const [show] = useShowPlayer();
   return (
@@ -37,7 +29,11 @@ const Aside: FC<{ className?: string }> = ({ className }) => {
           switch (key) {
             case AsideBtnKey.backTop:
               return (
-                <li key={key}>
+                <li
+                  key={key}
+                  className="tooltip tooltip-primary tooltip-left"
+                  data-tip={"返回顶部"}
+                >
                   <BackTopButton
                     className={cls}
                     iconCls={iconCls}
@@ -47,7 +43,11 @@ const Aside: FC<{ className?: string }> = ({ className }) => {
               );
             case AsideBtnKey.showPlayer:
               return !showPlayer ? (
-                <li key={key}>
+                <li
+                  key={key}
+                  className="tooltip tooltip-primary tooltip-left"
+                  data-tip={"显示播放栏"}
+                >
                   <ShowButton
                     className={cls}
                     iconCls={iconCls}
@@ -58,7 +58,11 @@ const Aside: FC<{ className?: string }> = ({ className }) => {
 
             default:
               return (
-                <li key={key}>
+                <li
+                  key={key}
+                  className="tooltip tooltip-primary tooltip-left"
+                  data-tip={"切换页面音源"}
+                >
                   <TransferButton
                     className={cls}
                     iconCls={iconCls}

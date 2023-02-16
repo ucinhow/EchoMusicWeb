@@ -15,14 +15,14 @@ const usePlayableSrc = (item?: SongItem) => {
   useEffect(() => {
     setIndex(0);
     if (playableList.length === 0) toastApi.error("无可播放音源，请尝试搜索");
-    else toastApi.info(`当前音源：${playableList[0].toUpperCase()}`);
+    else toastApi.info(`切换至音源：${playableList[0].toUpperCase()}`);
   }, [item]);
 
   useEffect(() => {
     if (item === undefined) return;
     if (index >= playableList.length)
       toastApi.error("已无可播放音源，请尝试搜索");
-    else toastApi.info(`当前音源：${playableList[index].toUpperCase()}`);
+    else toastApi.info(`切换至音源：${playableList[index].toUpperCase()}`);
   }, [index]);
 
   return {
