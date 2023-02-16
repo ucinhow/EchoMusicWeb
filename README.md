@@ -29,13 +29,10 @@ pnpm build
 
 ## Config
 
-- Config api baseUrl in `src/common/request.ts`
+- Config api baseUrl
 
-```typescript
-// src/common/request.ts
-import axios from "axios";
+replace `VITE_API_URL` value in `.env.local` file
 
-const baseUrl = "http://127.0.0.1:3001"; // replace the base url
+- Config web owner email
 
-const instance = axios.create({ baseURL: baseUrl });
-```
+replace `VITE_EMIAL` value in `.env.local` file
