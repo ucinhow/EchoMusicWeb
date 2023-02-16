@@ -29,10 +29,10 @@ const Footer: FC<{ className?: string }> = ({ className }) => {
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a href="">
+          <a href="https://github.com/NosignaL994/EchoMusicWeb">
             <BsGithub />
           </a>
-          <a href="">
+          <a href={`mailto:${import.meta.env.VITE_EMAIL}`}>
             <MdEmail />
           </a>
         </div>
