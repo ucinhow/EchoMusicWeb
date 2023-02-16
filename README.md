@@ -9,6 +9,13 @@
 pmpm install
 ```
 
+create a `.env.local` file to config project env variable like this:
+
+```
+VITE_API_URL=http://127.0.0.1:3001
+VITE_EMAIL=youremail@qq.com
+```
+
 ---
 
 ## Develop
