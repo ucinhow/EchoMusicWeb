@@ -40,11 +40,11 @@ const Toast = () => {
 };
 
 export const useToast = () => {
-  const { toastList, setStore } = useContext(context);
+  const { setStore } = useContext(context);
   const add = useCallback(
     (msg: string, type: Type) => {
       const toastObj = { msg, type };
-      setStore?.({ toastList: [...toastList, toastObj] });
+      setStore?.((pre) => ({ toastList: [...pre.toastList, toastObj] }));
       return () =>
         setStore?.((pre) => ({
           toastList: pre.toastList.filter((item) => item !== toastObj),
