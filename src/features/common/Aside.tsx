@@ -5,20 +5,27 @@ import {
   ShowButton,
 } from "@src/common/components";
 import { composeClass } from "@src/common/utils";
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { AsideBtnKey } from "@src/common/typings";
 import useToTop from "./hooks/useToTop";
 import useShowPlayer from "./hooks/useShowPlayer";
-
+import { useContextSelector } from "use-context-selector";
 const buttonKeys = Object.values(AsideBtnKey);
 
 const cls = "w-10 h-10 animate__zoomIn";
 const iconCls = "w-5 h-5";
 
 const Aside: FC<{ className?: string }> = ({ className }) => {
-  const store = useContext(context);
-  const { asideButtons, transSrc, showPlayer } = store;
-
+  // const store = useContext(context);
+  // const { asideButtons, transSrc, showPlayer } = store;
+  const { asideButtons, transSrc, showPlayer } = useContextSelector(
+    context,
+    ({ store: { asideButtons, transSrc, showPlayer } }) => ({
+      asideButtons,
+      transSrc,
+      showPlayer,
+    })
+  );
   const toTop = useToTop();
   const [show] = useShowPlayer();
   return (

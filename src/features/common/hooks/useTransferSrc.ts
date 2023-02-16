@@ -1,14 +1,14 @@
 import { useAsideBtn } from "./useAsideBtn";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { AsideBtnKey, SetState, Source } from "@src/common/typings";
-import { context } from "@src/common/components";
 import { SOURCE } from "@src/common/constants";
+import { useSetTransSrc } from "@src/common/hooks/setContext";
 export const useTransferSrc = (
   src: Source,
   setSrc: SetState<Source>,
   extraOpt?: VoidFunction
 ) => {
-  const { setStore } = useContext(context);
+  const setTransSrc = useSetTransSrc();
   const [add, remove] = useAsideBtn();
   useEffect(() => {
     add(AsideBtnKey.transferSrc);
@@ -19,11 +19,9 @@ export const useTransferSrc = (
   useEffect(() => {
     const index = SOURCE.indexOf(src);
     const newSrc = SOURCE[(index + 1) % SOURCE.length];
-    setStore?.({
-      transSrc: () => {
-        setSrc(newSrc);
-        extraOpt?.();
-      },
+    setTransSrc(() => {
+      setSrc(newSrc);
+      extraOpt?.();
     });
-  }, [setStore, src]);
+  }, [src]);
 };

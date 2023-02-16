@@ -1,14 +1,9 @@
-import { context } from "@src/common/components";
-import { useCallback, useContext } from "react";
+import { useSetShowPlayer } from "@src/common/hooks/setContext";
 
 const useShowPlayer = () => {
-  const { setStore } = useContext(context);
-  const show = useCallback(() => {
-    setStore?.({ showPlayer: true });
-  }, [setStore]);
-  const hide = useCallback(() => {
-    setStore?.({ showPlayer: false });
-  }, [setStore]);
+  const set = useSetShowPlayer();
+  const show = () => set(true);
+  const hide = () => set(false);
   return [show, hide];
 };
 export default useShowPlayer;

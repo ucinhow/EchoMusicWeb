@@ -3,7 +3,8 @@ import { RefObject, useCallback, useContext, useEffect, useState } from "react";
 import { context, useToast } from "@src/common/components";
 import { useDetail, useUrl } from "@src/features/song";
 import usePlayableSrc from "./usePlayableSrc";
-
+import { useSetPlay } from "@src/common/hooks/setContext";
+import { useContextSelector } from "use-context-selector";
 export enum Mode {
   loop = "loop",
   lock = "lock",
@@ -13,7 +14,11 @@ export enum Mode {
 const modeList = Object.values(Mode);
 
 const usePlayer = (audioRef: RefObject<HTMLAudioElement>) => {
-  const { playlist, playIdx, setStore } = useContext(context);
+  const { playIdx, playlist } = useContextSelector(context, ({ store }) => ({
+    playlist: store.playlist,
+    playIdx: store.playIdx,
+  }));
+  const setPlay = useSetPlay();
   const len = playlist.length;
   const item = playlist[playIdx];
   const { src, transfer } = usePlayableSrc(item);
@@ -27,7 +32,7 @@ const usePlayer = (audioRef: RefObject<HTMLAudioElement>) => {
   };
   const toast = useToast();
   const audio = audioRef.current;
-  const next = useCallback(() => {
+  const next = () => {
     if (len > 0) {
       switch (mode) {
         case Mode.lock:
@@ -37,17 +42,17 @@ const usePlayer = (audioRef: RefObject<HTMLAudioElement>) => {
           }
           return;
         case Mode.random:
-          setStore?.({ playIdx: randomIdx() });
+          setPlay(randomIdx());
           audio?.play?.();
           return;
         default:
-          setStore?.({ playIdx: (playIdx + 1) % len });
+          setPlay((playIdx + 1) % len);
           audio?.play?.();
           return;
       }
     }
-  }, [setStore]);
-  const prev = useCallback(() => {
+  };
+  const prev = () => {
     if (len > 0) {
       switch (mode) {
         case Mode.lock:
@@ -57,16 +62,16 @@ const usePlayer = (audioRef: RefObject<HTMLAudioElement>) => {
           }
           return;
         case Mode.random:
-          setStore?.({ playIdx: randomIdx() });
+          setPlay(randomIdx());
           audio?.play?.();
           return;
         default:
-          setStore?.({ playIdx: (playIdx - 1 + len) % len });
+          setPlay((playIdx - 1 + len) % len);
           audio?.play?.();
           return;
       }
     }
-  }, [setStore]);
+  };
 
   const changeMode = () => {
     const idx = modeList.indexOf(mode);

@@ -1,14 +1,8 @@
-import {
-  FC,
-  PropsWithChildren,
-  useEffect,
-  createContext,
-  ReactNode,
-} from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 import { SongItem, AsideBtnKey, SetAhookState } from "@src/common/typings";
 import { useSetState } from "ahooks";
 import { ToastConfig } from "@src/common/components/Toast";
-
+import { createContext } from "use-context-selector";
 export type SetStore = SetAhookState<Store>;
 
 export interface Store {
@@ -17,7 +11,6 @@ export interface Store {
   toastList: ToastConfig[];
   modalContent?: ReactNode;
   asideButtons: Record<AsideBtnKey, boolean>;
-  setStore?: SetStore;
   toTop?: VoidFunction;
   showPlayer: boolean;
   transSrc?: VoidFunction;
@@ -36,14 +29,18 @@ const defaultStore: Store = {
   transSrc: () => {},
 };
 
-export const context = createContext<Store>(defaultStore);
+export const context = createContext<{
+  store: Store;
+  setStore: SetAhookState<Store>;
+}>({
+  store: defaultStore,
+  setStore: () => {},
+});
 const Provider = context.Provider;
+
 const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [store, setStore] = useSetState<Store>(defaultStore);
-  useEffect(() => {
-    setStore({ setStore: setStore });
-  }, []);
-  return <Provider value={store}>{children}</Provider>;
+  const [store, setStore] = useSetState(defaultStore);
+  return <Provider value={{ store, setStore }}>{children}</Provider>;
 };
 
 export default GlobalProvider;

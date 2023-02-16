@@ -21,7 +21,7 @@ import {
 import { SongItem } from "@src/common/typings";
 import { Item } from "@src/features/song";
 import useShowPlayer from "./hooks/useShowPlayer";
-
+import { useContextSelector } from "use-context-selector";
 interface Props {
   className?: string;
 }
@@ -99,7 +99,10 @@ const Player: FC<Props> = ({ className }) => {
     audio?.pause();
   };
   const containerRef = useRef<HTMLDivElement>(null);
-  const { showPlayer } = useContext(context);
+  const showPlayer = useContextSelector(
+    context,
+    ({ store: { showPlayer } }) => showPlayer
+  );
   const [animate, setAnimate] = useState(false);
   useEffect(() => {
     setAnimate(true);

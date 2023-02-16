@@ -1,6 +1,5 @@
 import { useGroup, ToplistGroupResponse } from "./hooks";
-import { FC, useContext } from "react";
-import { context } from "@src/common/components";
+import { FC } from "react";
 import Spinner from "@src/common/components/Spinner";
 import { Card } from "@src/common/components";
 import { Source } from "@src/common/typings";
@@ -10,7 +9,6 @@ const Menu: FC<{ setId: (id: number) => void; id?: number; src: Source }> = ({
   id: currentId,
   src,
 }) => {
-  // const { toplistSrc: src } = useContext(context);
   const onSuccess = (res: ToplistGroupResponse) => {
     setId(res.groups[0].toplist[0].id);
   };

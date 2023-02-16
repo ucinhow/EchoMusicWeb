@@ -1,6 +1,7 @@
 import { context } from "@src/common/components/GlobalProvider";
-import { FC, PropsWithChildren, useCallback, useContext } from "react";
-
+import { FC, PropsWithChildren } from "react";
+import { useSetToast } from "../hooks/setContext";
+import { useContextSelector } from "use-context-selector";
 enum Type {
   success = "success",
   error = "error",
@@ -27,7 +28,7 @@ const Alert: FC<PropsWithChildren<{ type: Type }>> = ({ type, children }) => {
 };
 
 const Toast = () => {
-  const { toastList } = useContext(context);
+  const toastList = useContextSelector(context, ({ store }) => store.toastList);
   return (
     <ul className="toast toast-end toast-top z-50">
       {toastList.map(({ msg, type }, idx) => (
@@ -40,18 +41,13 @@ const Toast = () => {
 };
 
 export const useToast = () => {
-  const { setStore } = useContext(context);
-  const add = useCallback(
-    (msg: string, type: Type) => {
-      const toastObj = { msg, type };
-      setStore?.((pre) => ({ toastList: [...pre.toastList, toastObj] }));
-      return () =>
-        setStore?.((pre) => ({
-          toastList: pre.toastList.filter((item) => item !== toastObj),
-        }));
-    },
-    [setStore]
-  );
+  const set = useSetToast();
+  const add = (msg: string, type: Type) => {
+    const toastObj = { msg, type };
+    set((prev) => [...prev, toastObj]);
+    return () => set((prev) => prev.filter((item) => item !== toastObj));
+  };
+
   const api = (msg: string, type: Type, duration: number) => {
     const remove = add(msg, type);
     setTimeout(remove, duration);
