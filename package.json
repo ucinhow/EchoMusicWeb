@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "run:docker": "docker build --tag echo-music-web . && docker run -d -p 4173:4173 echo-music-web"
   },
   "dependencies": {
     "ahooks": "^3.7.4",
