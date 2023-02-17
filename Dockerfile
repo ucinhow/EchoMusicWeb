@@ -1,6 +1,6 @@
-FROM node:lts
+FROM node:lts as build-stage
 
-WORKDIR /app
+# WORKDIR /app
 
 COPY ["package.json", "pnpm-lock.yaml", "./"]
 
@@ -10,6 +10,10 @@ RUN pnpm install
 
 COPY . ./
 
-EXPOSE 4173
+RUN pnpm build
 
-CMD ["pnpm", "preview"]
+FROM nginx as prod-stage
+
+COPY --from=build-stage /dist /usr/share/nginx/html
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
