@@ -15,9 +15,7 @@ const Indictor: FC<{ num: number; active: number; className?: string }> = ({
   active,
   className,
 }) => (
-  <ul
-    className={composeClass(className, "flex space-x-1 justify-center w-full")}
-  >
+  <ul className={composeClass(className, "flex space-x-1 justify-center")}>
     {new Array(num).fill(1).map((_, idx) => (
       <li
         className={composeClass(
@@ -76,7 +74,7 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="w-full relative overflow-hidden rounded-lg">
+    <div className="w-full h-full relative overflow-hidden rounded-lg inline-block leading-[100%]">
       <ul
         style={{
           transform: `translateX(${offset}%)`,
@@ -105,8 +103,7 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
           );
         })}
       </ul>
-
-      <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+      <div className="absolute top-1/2 -translate-y-1/2 left-5">
         <button
           className="btn btn-circle btn-primary btn-sm"
           type="button"
@@ -114,6 +111,8 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
         >
           ❮
         </button>
+      </div>
+      <div className="absolute top-1/2 -translate-y-1/2 right-5">
         <button
           className="btn btn-circle btn-primary btn-sm"
           type="button"
@@ -122,10 +121,13 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
           ❯
         </button>
       </div>
+
       <Indictor
         num={count}
         active={current}
-        className={embedIndictor ? "absolute bottom-2" : "mt-2"}
+        className={
+          embedIndictor ? "absolute bottom-2 left-1/2 -translate-x-1/2" : "mt-2"
+        }
       />
     </div>
   );
