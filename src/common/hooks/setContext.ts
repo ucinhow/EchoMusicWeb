@@ -17,7 +17,7 @@ export const useSetPlay = () => {
     playIdx: number,
     updater?: Array<SongItem> | ((prev: Array<SongItem>) => Array<SongItem>)
   ) => {
-    if (updater === undefined) return { playIdx };
+    if (updater === undefined) return setStore({ playIdx });
     setStore((state) => {
       const newList =
         typeof updater === "function" ? updater(state.playlist) : updater;
