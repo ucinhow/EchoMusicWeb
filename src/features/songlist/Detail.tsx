@@ -1,13 +1,9 @@
 import { Card } from "@src/common/components";
-import { SonglistItem, Source } from "@src/common/typings";
-import { useLocation } from "react-router-dom";
 import { DetailMeta } from "./DetailMeta";
 import { DetailList } from "./DetailList";
-import { useDetail } from "./hooks";
+import { useDetail, useLocation } from "./hooks";
 export const Detail = () => {
-  const { state } = useLocation();
-  const item = state as SonglistItem & { src: Source };
-  const { id, src } = item;
+  const { id, src } = useLocation();
   const res = useDetail(id, src);
   const { data, loading } = res;
   return (

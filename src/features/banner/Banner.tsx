@@ -1,13 +1,17 @@
 import { Carousel, PicSkeleton } from "@src/common/components";
 import { get } from "@src/common/request";
 import { useRequest } from "ahooks";
-import { DataType } from "@src/common/typings";
+import { DataType, Source } from "@src/common/typings";
 import { FC } from "react";
 import { composeClass } from "@src/common/utils";
 import Item from "./Item";
+import {
+  useToAlbumDetail,
+  useToSonglistDetail,
+} from "@src/common/hooks/navigate";
 
 interface BannerResponse {
-  banners: Array<{ type: DataType; id: string; picUrl: string }>;
+  banners: Array<{ type: DataType; id: string; picUrl: string; src: Source }>;
 }
 
 const useBanner = () => {
@@ -18,12 +22,27 @@ const useBanner = () => {
 
 const Banner: FC<{ className?: string }> = ({ className }) => {
   const { data, loading } = useBanner();
+  const toSonglist = useToSonglistDetail();
+  const toAlbum = useToAlbumDetail();
   return (
     <div className={composeClass("h-80 w-full", className)}>
       {data && !loading ? (
         <Carousel embedIndictor={true}>
-          {(data.banners || []).map(({ picUrl }, idx) => (
-            <Item key={idx} src={picUrl} className="h-80" />
+          {(data.banners || []).map(({ picUrl, type, id, src }) => (
+            <Item
+              key={id}
+              src={picUrl}
+              className="h-80"
+              onClick={() => {
+                switch (type) {
+                  case DataType.songlist:
+                    toSonglist({ id, src });
+                    return;
+                  case DataType.album:
+                    toAlbum({ [src]: { id } });
+                }
+              }}
+            />
           ))}
         </Carousel>
       ) : (

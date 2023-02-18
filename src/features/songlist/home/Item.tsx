@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   className?: string;
@@ -24,12 +23,10 @@ export const Skeleton = () => (
       </svg>
     </div>
     <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-1/2"></div>
-    {/* <div className="h-3 bg-gray-200 rounded-sm dark:bg-gray-700 w-1/3"></div> */}
   </div>
 );
 
 const Item: FC<Props> = ({ src, title }) => {
-  const navigate = useNavigate();
   return (
     <div className="flex flex-col w-[14.5rem] space-y-1.5 cursor-pointer">
       <img src={src} alt="" className="w-[14.5rem] h-[14.5rem] rounded-lg" />

@@ -1,15 +1,9 @@
 import { Card } from "@src/common/components";
-import { AlbumItem } from "@src/common/typings";
-import { useLocation } from "react-router-dom";
 import { DetailMeta } from "./DetailMeta";
 import { DetailList } from "./DetailList";
-import { useDetail } from "./hooks";
-import { SOURCE } from "@src/common/constants";
+import { useDetail, useLocation } from "./hooks";
 export const Detail = () => {
-  const { state } = useLocation();
-  const item = state as AlbumItem;
-  const src = SOURCE.find((src) => item[src] !== undefined);
-  const id = src ? item[src]?.id : undefined;
+  const { src, id } = useLocation();
   const res = useDetail(id, src);
   const { data, loading } = res;
   return (

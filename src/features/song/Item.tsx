@@ -2,8 +2,8 @@ import { SongItem } from "@src/common/typings";
 import { FC } from "react";
 import { PlayButton } from "@src/common/components";
 import { composeClass, formatDuration } from "@src/common/utils";
-import { useNavigate } from "react-router-dom";
 import { TextSkeleton } from "@src/common/components";
+import { useToSongDetail } from "@src/common/hooks/navigate";
 
 const colorCls = "bg-neutral text-neutral-content";
 const hoverBgCls = "hover:bg-neutral-focus";
@@ -31,10 +31,10 @@ export const Item: FC<{
   small?: boolean;
 }> = ({ item, onPlayClick, small = false }) => {
   const { name, singerName, duration, albumName } = item;
-  const navigate = useNavigate();
+  const toDetail = useToSongDetail();
   return !small ? (
     <a
-      onClick={() => navigate("/song/detail", { state: item })}
+      onClick={() => toDetail(item)}
       className={composeClass(
         "h-12 px-5 w-full text-sm cursor-pointer font-bold",
         colorCls,
@@ -52,7 +52,7 @@ export const Item: FC<{
     </a>
   ) : (
     <a
-      onClick={() => navigate("/song/detail", { state: item })}
+      onClick={() => toDetail(item)}
       className={composeClass(
         "flex justify-between h-11 rounded-lg px-5 cursor-pointer",
         colorCls,

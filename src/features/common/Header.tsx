@@ -1,7 +1,8 @@
 import { useState, FC, useRef } from "react";
 import { composeClass } from "@src/common/utils";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useKeyPress } from "ahooks";
+import { useToSearch } from "@src/common/hooks/navigate";
 
 const routerList = [
   { title: "首页", to: "/" },
@@ -19,10 +20,10 @@ const HeaderSearch: FC<{
 }> = ({ isSearch, setIsSearch }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const input = inputRef.current;
-  const navigate = useNavigate();
+  const toSearch = useToSearch();
   useKeyPress("enter", () => {
     if (!input || !input.value) return;
-    navigate(`/search/${encodeURIComponent(input.value)}`);
+    toSearch(input.value);
   });
   return (
     <div

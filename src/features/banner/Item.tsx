@@ -1,12 +1,19 @@
 import { FC } from "react";
 import { composeClass } from "@src/common/utils";
+
 interface Props {
   className: string;
   src: string;
+  onClick?: VoidFunction;
 }
-const Item: FC<Props> = ({ className, src }) => {
+const Item: FC<Props> = ({ className, src, onClick }) => {
   return (
-    <div className={(composeClass(className), "relative flex justify-center")}>
+    <div
+      className={
+        (composeClass(className), "relative flex justify-center cursor-pointer")
+      }
+      onClick={onClick}
+    >
       <div
         style={{
           backgroundImage: `url("${src}")`,

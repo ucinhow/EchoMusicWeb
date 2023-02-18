@@ -3,7 +3,7 @@ import { SOURCE } from "@src/common/constants";
 import { AlbumItem } from "@src/common/typings";
 import { FC } from "react";
 import { PicSkeleton, TextSkeleton } from "@src/common/components";
-import { useNavigate } from "react-router-dom";
+import { useToAlbumDetail } from "@src/common/hooks/navigate";
 
 const useSrcPic = (item: AlbumItem) => {
   const toast = useToast();
@@ -20,11 +20,11 @@ const useSrcPic = (item: AlbumItem) => {
 export const Item: FC<{ item: AlbumItem }> = ({ item }) => {
   const { name, singerName } = item;
   const src = useSrcPic(item);
-  const navigate = useNavigate();
+  const toDetail = useToAlbumDetail();
   return (
     <a
       className="flex flex-col w-[14.5rem] space-y-1 cursor-pointer"
-      onClick={() => navigate("/album/detail", { state: item })}
+      onClick={() => toDetail(item)}
     >
       <img src={src} alt="" className="w-[14.5rem] h-[14.5rem] rounded-lg" />
       <div className="flex flex-col">
