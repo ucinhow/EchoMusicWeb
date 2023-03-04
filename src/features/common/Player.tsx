@@ -22,6 +22,7 @@ import { SongItem } from "@src/common/typings";
 import { Item } from "@src/features/song";
 import useShowPlayer from "./hooks/useShowPlayer";
 import { useContextSelector } from "use-context-selector";
+import { useFadeAnimation } from "@src/common/hooks";
 interface Props {
   className?: string;
 }
@@ -108,29 +109,22 @@ const Player: FC<Props> = ({ className }) => {
     context,
     ({ store: { showPlayer } }) => showPlayer
   );
-  const [animate, setAnimate] = useState(false);
-  useEffect(() => {
-    setAnimate(true);
-  }, [showPlayer]);
+  const [clsName, shouldMount] = useFadeAnimation(showPlayer, containerRef);
 
   // send toast when play error
   const toast = useToast();
 
   return (
     <div className="w-screen flex justify-center">
-      {(showPlayer || animate) && (
+      {shouldMount && (
         <div
           className={composeClass(
             "w-4/5 h-20 rounded-full flex flex-row items-center backdrop-blur-lg bg-base-100 px-5 py-3 justify-between space-x-10 shadow",
-            showPlayer ? "animate__fadeIn" : "animate__fadeOut",
-            animate ? "animate__animated" : "",
+            clsName,
             "fixed bottom-2",
             className
           )}
           ref={containerRef}
-          onAnimationEnd={({ animationName }) => {
-            if (animationName === "fadeOut") setAnimate(false);
-          }}
         >
           <div className="flex items-center space-x-2 flex-1">
             {picUrl ? (

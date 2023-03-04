@@ -42,5 +42,3 @@ export const createIconButton =
   };
 
 export type ButtonType = FC<Props>;
-
-// export default createIconButton;

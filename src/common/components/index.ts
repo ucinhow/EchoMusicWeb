@@ -10,4 +10,4 @@ export { default as Modal } from "./Modal";
 export * from "./Modal";
 export { default as Empty } from "./Empty";
 export { default as Spinner } from "./Spinner";
-// export * from "./createIconButton";
+export * from "./createIconButton";

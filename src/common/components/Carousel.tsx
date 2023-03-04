@@ -32,13 +32,15 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
   children,
   embedIndictor = false,
 }) => {
+  const childs = Children.toArray(children);
+
   const [current, setCurrent] = useState(1);
   const [offset, setOffset] = useState(0);
   const [firstLeft, setFirstLeft] = useState(0);
   const [lastLeft, setLastLeft] = useState(0);
   const [animated, setAnimated] = useState(true);
   const [move, setMove] = useState(Move.none);
-  const count = Children.count(children);
+  const count = childs.length;
   const step = 100 / count;
 
   useEffect(() => {
@@ -74,15 +76,18 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="w-full h-full relative overflow-hidden rounded-lg inline-block leading-[100%]">
+    <div className="w-full h-full relative overflow-hidden rounded-lg">
       <ul
         style={{
           transform: `translateX(${offset}%)`,
           width: `calc(${count} * 100%)`,
         }}
-        className={composeClass("flex", animated ? "transition-transform" : "")}
+        className={composeClass(
+          "flex",
+          animated ? "transition-transform duration-500" : ""
+        )}
       >
-        {Children.map(children, (child, idx) => {
+        {childs.map((child, idx) => {
           const cls = "relative flex-1";
           if (idx === 0)
             return (
