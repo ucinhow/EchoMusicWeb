@@ -1,13 +1,16 @@
-import { FC, useState, PropsWithChildren, Children, useEffect } from "react";
+import {
+  FC,
+  useState,
+  PropsWithChildren,
+  Children,
+  useEffect,
+  useCallback,
+} from "react";
 import { composeClass } from "../utils";
+
 interface Props {
   embedIndictor?: boolean;
-}
-
-enum Move {
-  right = 1,
-  left = 2,
-  none = 3,
+  auto?: number;
 }
 
 const Indictor: FC<{ num: number; active: number; className?: string }> = ({
@@ -20,7 +23,7 @@ const Indictor: FC<{ num: number; active: number; className?: string }> = ({
       <li
         className={composeClass(
           "rounded-full border w-[0.625rem] h-[0.625rem] border-base-content",
-          active === idx + 1 ? "bg-base-100" : "bg-base-content"
+          active === idx ? "bg-base-100" : "bg-base-content"
         )}
         key={idx}
       ></li>
@@ -31,82 +34,74 @@ const Indictor: FC<{ num: number; active: number; className?: string }> = ({
 const Carousel: FC<PropsWithChildren<Props>> = ({
   children,
   embedIndictor = false,
+  auto,
 }) => {
   const childs = Children.toArray(children);
+  const renderChilds = childs.length
+    ? [childs[childs.length - 1], ...childs, childs[0]]
+    : [];
 
-  const [current, setCurrent] = useState(1);
-  const [offset, setOffset] = useState(0);
-  const [firstLeft, setFirstLeft] = useState(0);
-  const [lastLeft, setLastLeft] = useState(0);
-  const [animated, setAnimated] = useState(true);
-  const [move, setMove] = useState(Move.none);
-  const count = childs.length;
-  const step = 100 / count;
+  const [index, setIndex] = useState(1); // index of the current item
+  const [inTransition, setInTransition] = useState(true);
 
-  useEffect(() => {
-    if (move === Move.none) {
-      firstLeft !== 0 && setFirstLeft(0);
-      lastLeft !== 0 && setLastLeft(0);
-      return;
-    }
-    setAnimated(true);
-    const newOffset = offset + (move === Move.right ? -step : step);
-    setOffset(newOffset);
-    setMove(Move.none);
-  });
+  const count = renderChilds.length;
+  const ulTranslateX = `translateX(${(-index * 100) / count}%)`;
+  const ulWidth = `calc(${count} * 100%)`;
+
+  const calcActive = () => {
+    if (index === 0) return childs.length - 1;
+    else if (index === renderChilds.length - 1) return 0;
+    return index - 1;
+  };
 
   const prev = () => {
-    if (current === 1) {
-      setAnimated(false);
-      setFirstLeft(100);
-      setOffset(-100);
-    }
-    setCurrent(current === 1 ? count : current - 1);
-    setMove(Move.left);
+    if (index === 0) return;
+    setInTransition(true);
+    setIndex((index + count - 1) % count);
   };
 
-  const next = () => {
-    if (current === count) {
-      setAnimated(false);
-      setLastLeft(-100);
-      setOffset(step);
+  const next = useCallback(() => {
+    if (index === count - 1) return;
+    setInTransition(true);
+    setIndex((index + 1) % count);
+  }, [index]);
+
+  const onUlTransitionEnd = () => {
+    if (index === 0 || index === count - 1) {
+      setInTransition(false);
     }
-    setCurrent(current === count ? 1 : current + 1);
-    setMove(Move.right);
   };
+
+  useEffect(() => {
+    if (inTransition === true) return;
+    if (index === 0) setIndex(count - 2);
+    else if (index === count - 1) setIndex(1);
+  }, [inTransition]);
+
+  useEffect(() => {
+    if (auto === undefined) return;
+    const timer = setTimeout(next, auto);
+    return () => clearTimeout(timer);
+  }, [next, auto]);
 
   return (
     <div className="w-full h-full relative overflow-hidden rounded-lg">
       <ul
         style={{
-          transform: `translateX(${offset}%)`,
-          width: `calc(${count} * 100%)`,
+          transform: ulTranslateX,
+          width: ulWidth,
         }}
         className={composeClass(
           "flex",
-          animated ? "transition-transform duration-500" : ""
+          inTransition ? "transition-transform duration-500" : ""
         )}
+        onTransitionEnd={onUlTransitionEnd}
       >
-        {childs.map((child, idx) => {
-          const cls = "relative flex-1";
-          if (idx === 0)
-            return (
-              <li style={{ left: `${firstLeft}%` }} className={cls} key={idx}>
-                {child}
-              </li>
-            );
-          if (idx === count - 1)
-            return (
-              <li style={{ left: `${lastLeft}%` }} className={cls} key={idx}>
-                {child}
-              </li>
-            );
-          return (
-            <li className={cls} key={idx}>
-              {child}
-            </li>
-          );
-        })}
+        {renderChilds.map((child, idx) => (
+          <li className="relative flex-1" key={idx}>
+            {child}
+          </li>
+        ))}
       </ul>
       <div className="absolute top-1/2 -translate-y-1/2 left-5">
         <button
@@ -128,8 +123,8 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
       </div>
 
       <Indictor
-        num={count}
-        active={current}
+        num={childs.length}
+        active={calcActive()}
         className={
           embedIndictor ? "absolute bottom-2 left-1/2 -translate-x-1/2" : "mt-2"
         }
