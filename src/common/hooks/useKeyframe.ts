@@ -28,11 +28,15 @@ const useKeyframe = (
         setShouldMount(true);
         setState(AnimateState.in);
       };
-      // if it is running out animation, interrupt it, then run the callback above in next Macro Task
+      // if it is running out animation, interrupt it, then run the callback above
       if (state === AnimateState.out) {
-        setState(AnimateState.none);
-        setShouldMount(false);
-        setTimeout(mountAndDisplay, 0);
+        new Promise((resolve) => {
+          setState(AnimateState.none);
+          setShouldMount(() => {
+            resolve(undefined);
+            return false;
+          });
+        }).then(mountAndDisplay);
         return;
       }
       // if not, run the callback
