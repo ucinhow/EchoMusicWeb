@@ -27,7 +27,7 @@ const Banner: FC<{ className?: string }> = ({ className }) => {
   return (
     <div className={composeClass("h-80 w-full", className)}>
       {data && !loading ? (
-        <Carousel embedIndictor={true} auto={3000}>
+        <Carousel embedIndictor={true} auto>
           {(data.banners || []).map(({ picUrl, type, id, src }) => (
             <Item
               key={id}

@@ -10,7 +10,8 @@ import { composeClass } from "../utils";
 
 interface Props {
   embedIndictor?: boolean;
-  auto?: number;
+  auto?: boolean;
+  interval?: number;
 }
 
 const Indictor: FC<{ num: number; active: number; className?: string }> = ({
@@ -34,7 +35,8 @@ const Indictor: FC<{ num: number; active: number; className?: string }> = ({
 const Carousel: FC<PropsWithChildren<Props>> = ({
   children,
   embedIndictor = false,
-  auto,
+  auto: autoProp = true,
+  interval = 3000,
 }) => {
   const childs = Children.toArray(children);
   const renderChilds = childs.length
@@ -43,6 +45,7 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
 
   const [index, setIndex] = useState(1); // index of the current item
   const [inTransition, setInTransition] = useState(true);
+  const [auto, setAuto] = useState(autoProp);
 
   const count = renderChilds.length;
   const ulTranslateX = `translateX(${(-index * 100) / count}%)`;
@@ -79,13 +82,20 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
   }, [inTransition]);
 
   useEffect(() => {
-    if (auto === undefined) return;
-    const timer = setTimeout(next, auto);
+    if (auto === false) return;
+    const timer = setTimeout(next, interval);
     return () => clearTimeout(timer);
-  }, [next, auto]);
+  }, [next, auto, interval]);
 
   return (
-    <div className="w-full h-full relative overflow-hidden rounded-lg">
+    <div
+      className="w-full h-full relative overflow-hidden rounded-lg"
+      onMouseEnter={() => setAuto(false)}
+      onMouseLeave={() => {
+        if (autoProp === false) return;
+        setAuto(true);
+      }}
+    >
       <ul
         style={{
           transform: ulTranslateX,
@@ -98,7 +108,7 @@ const Carousel: FC<PropsWithChildren<Props>> = ({
         onTransitionEnd={onUlTransitionEnd}
       >
         {renderChilds.map((child, idx) => (
-          <li className="relative flex-1" key={idx}>
+          <li className="relative flex-1 overflow-hidden" key={idx}>
             {child}
           </li>
         ))}
