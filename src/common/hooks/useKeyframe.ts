@@ -42,7 +42,6 @@ const useKeyframe = (
       // if not, run the callback
       mountAndDisplay();
     } else {
-      console.log("unmount");
       // display the animation then unmount the component in onanimationend
       setState(AnimateState.out);
     }
